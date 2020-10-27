@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     AppBar,
     Toolbar,
@@ -29,51 +29,46 @@ const content = {
     },
 };
 
-class NavBar extends React.Component {
-    static contextType = ThemeContext;
+const NavBar = props => {
+    const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+    const { classes } = props;
+    const { language } = props.languageContext;
+    const { search, flag } = content[language];
 
-    render() {
-        const { isDarkMode, toggleTheme } = this.context;
-        const { classes } = this.props;
-        const { language } = this.props.languageContext;
-
-        return (
-            <div className={classes.root}>
-                <AppBar
-                    position='static'
-                    color={isDarkMode ? 'default' : 'primary'}>
-                    <Toolbar>
-                        <IconButton
-                            className={classes.menuButton}
-                            color='inherit'>
-                            <span>{content[language].flag}</span>
-                        </IconButton>
-                        <Typography
-                            className={classes.title}
-                            variant='h6'
-                            color='inherit'>
-                            App Title
-                        </Typography>
-                        <Switch onChange={toggleTheme} />
-                        <div className={classes.row} />
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <Search />
-                            </div>
-                            <InputBase
-                                placeholder={`${content[language].search}...`}
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                            />
+    return (
+        <div className={classes.root}>
+            <AppBar
+                position='static'
+                color={isDarkMode ? 'default' : 'primary'}>
+                <Toolbar>
+                    <IconButton className={classes.menuButton} color='inherit'>
+                        <span>{flag}</span>
+                    </IconButton>
+                    <Typography
+                        className={classes.title}
+                        variant='h6'
+                        color='inherit'>
+                        App Title
+                    </Typography>
+                    <Switch onChange={toggleTheme} />
+                    <div className={classes.row} />
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <Search />
                         </div>
-                    </Toolbar>
-                </AppBar>
-            </div>
-        );
-    }
-}
+                        <InputBase
+                            placeholder={`${search}...`}
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                        />
+                    </div>
+                </Toolbar>
+            </AppBar>
+        </div>
+    );
+};
 
 const app = withStyles(Styles, { withTheme: true })(NavBar);
 
